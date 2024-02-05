@@ -13,7 +13,6 @@ class SongsService {
     title, year, genre, performer, duration, albumId,
   }) {
     const id = `song-${nanoid(16)}`;
-
     const query = {
       text: 'INSERT INTO songs VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING id',
       values: [id, title, year, genre, performer, duration, albumId],
@@ -54,7 +53,7 @@ class SongsService {
     return result.rows.map(mapDBToModelSong);
   }
 
-  async getSongByAlbumId(id) {
+  async getSongById(id) {
     const query = {
       text: 'SELECT * FROM songs WHERE id = $1',
       values: [id],
