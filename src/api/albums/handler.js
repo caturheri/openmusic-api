@@ -1,16 +1,15 @@
 const autoBind = require('auto-bind');
 
-class AlbumHandler {
+class AlbumsHandler {
   constructor(service, validator) {
     this._service = service;
     this._validator = validator;
     autoBind(this);
   }
 
-  async postAlbumHandler(req, h) {
-    this._validator.validateAlbumPayload(req.payload);
-    const { name, year } = req.payload;
-    const albumId = await this._service.addAlbum({ name, year });
+  async postAlbumHandler(request, h) {
+    this._validator.validateAlbumPayload(request.payload);
+    const albumId = await this._service.addAlbum(request.payload);
     const response = h.response({
       status: 'success',
       message: 'Album berhasil ditambahkan',
@@ -22,8 +21,8 @@ class AlbumHandler {
     return response;
   }
 
-  async getAlbumByIdHandler(req, h) {
-    const { id } = req.params;
+  async getAlbumByIdHandler(request, h) {
+    const { id } = request.params;
     const album = await this._service.getAlbumById(id);
     const response = h.response({
       status: 'success',
@@ -35,10 +34,10 @@ class AlbumHandler {
     return response;
   }
 
-  async putAlbumByIdHandler(req, h) {
-    this._validator.validateAlbumPayload(req.payload);
-    const { id } = req.params;
-    await this._service.editAlbumById(id, req.payload);
+  async putAlbumByIdHandler(request, h) {
+    this._validator.validateAlbumPayload(request.payload);
+    const { id } = request.params;
+    await this._service.editAlbumById(id, request.payload);
     const response = h.response({
       status: 'success',
       message: 'Album berhasil diperbarui',
@@ -47,8 +46,8 @@ class AlbumHandler {
     return response;
   }
 
-  async deleteAlbumByIdHandler(req, h) {
-    const { id } = req.params;
+  async deleteAlbumByIdHandler(request, h) {
+    const { id } = request.params;
     await this._service.deleteAlbumById(id);
     const response = h.response({
       status: 'success',
@@ -59,4 +58,4 @@ class AlbumHandler {
   }
 }
 
-module.exports = AlbumHandler;
+module.exports = AlbumsHandler;

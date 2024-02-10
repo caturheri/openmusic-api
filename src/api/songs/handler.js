@@ -1,6 +1,6 @@
 const autoBind = require('auto-bind');
 
-class SongHandler {
+class SongsHandler {
   constructor(service, validator) {
     this._service = service;
     this._validator = validator;
@@ -21,8 +21,8 @@ class SongHandler {
     return response;
   }
 
-  async getSongsHandler(req, h) {
-    const { title = null, performer = null } = req.query;
+  async getSongsHandler(request, h) {
+    const { title = null, performer = null } = request.query;
     const songs = await this._service.getSongs(title, performer);
     const response = h.response({
       status: 'success',
@@ -34,8 +34,8 @@ class SongHandler {
     return response;
   }
 
-  async getSongByIdHandler(req, h) {
-    const { id } = req.params;
+  async getSongByIdHandler(request, h) {
+    const { id } = request.params;
     const song = await this._service.getSongById(id);
     const response = h.response({
       status: 'success',
@@ -47,28 +47,28 @@ class SongHandler {
     return response;
   }
 
-  async putSongByIdHandler(req, h) {
-    this._validator.validateSongPayload(req.payload);
-    const { id } = req.params;
-    await this._service.editSongById(id, req.payload);
+  async putSongByIdHandler(request, h) {
+    this._validator.validateSongPayload(request.payload);
+    const { id } = request.params;
+    await this._service.editSongById(id, request.payload);
     const response = h.response({
       status: 'success',
-      message: 'Song berhasil diperbarui',
+      message: 'Lagu berhasil diperbarui',
     });
     response.code(200);
     return response;
   }
 
-  async deleteSongByIdHandler(req, h) {
-    const { id } = req.params;
+  async deleteSongByIdHandler(request, h) {
+    const { id } = request.params;
     await this._service.deleteSongById(id);
     const response = h.response({
       status: 'success',
-      message: 'Song berhasil dihapus',
+      message: 'Lagu berhasil dihapus',
     });
     response.code(200);
     return response;
   }
 }
 
-module.exports = SongHandler;
+module.exports = SongsHandler;
